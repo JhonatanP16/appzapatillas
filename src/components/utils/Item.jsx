@@ -1,7 +1,17 @@
 import React from 'react'
 import { FaShoppingBag, FaStar } from 'react-icons/fa'
+import { useDispatch } from 'react-redux'
+import { cartActions } from '../../redux/cartSlice';
 
 const Item = ({ifExists,item}) => {
+    const dispatch = useDispatch();
+    
+    const onAddToCart = () => {
+        dispatch(cartActions.setAddItemToCart(item))
+    }
+    const onCartToggle = () =>{
+        dispatch(cartActions.setOpenCart({cartState:true}));
+    }
   return (
     <>
     <div className={` relative bg-gradient-to-b ${item.color} ${item.shadow} grid items-center 
@@ -23,12 +33,14 @@ const Item = ({ifExists,item}) => {
                 <div className='flex items-center gap-3'>
                         <button type='button' className='bg-white/90 blur-effect-theme 
                         button-theme p-0.5 shadow shadow-sky-200 '
+                        onClick={onAddToCart}
                         >
                             <FaShoppingBag className='icon-style text-slate-900' />
                         </button>
                         <button type='button'
                          className='bg-white/90 blur-effect-theme py-1 
-                        button-theme p-2 shadow shadow-sky-200 text-sm text-black'>{item.btn}</button>
+                        button-theme p-2 shadow shadow-sky-200 text-sm text-black'
+                        onClick={() => {onAddToCart(); onCartToggle()}}>{item.btn}</button>
                 </div>
         </div>
         <div className={`${ifExists ? 'absolute top-5 right-1':'justify-center'}`}>

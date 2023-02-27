@@ -1,9 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import Logo from '../assets/logo.png'
 import { FaHeart,FaSearch, FaShoppingBag} from "react-icons/fa";
+import { useDispatch, useSelector } from 'react-redux';
+import { cartActions } from '../redux/cartSlice';
 const Navbar = () => {
     const [navState,setNavState] = useState(false);
-
+    const dispatch = useDispatch();
+    const quantityItems = useSelector(state => state.cart.cartTotalQuantity)
+    const onCartToggle = () => {
+        dispatch(cartActions.setOpenCart({
+            cartState:true
+        }))
+    }
     const onNavScroll = () =>{
         if(window.scrollY > 30){
             setNavState(true)
@@ -35,13 +43,14 @@ const Navbar = () => {
                 <li className='grid items-center'>
                     <button 
                     type='button'
+                    onClick={onCartToggle}
                     className='border-none outline-none active:scale-110 transition-all duration-300 relative'>
                     <FaShoppingBag className={`icon-style ${navState && 'text-slate-900 transition-all duration-300'}`}/>
                     <div
                     className='absolute top-4 right-0 shadow w-4 h-4 text-[0.65rem] leading-tight
                     font-medium rounded-full flex items-center justify-center
                     cursor-pointer hover:scale-110 transition-all duration-300'>
-                        4
+                        {quantityItems}
                     </div>
                     </button>
                 </li>
